@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCB Routing Viewer — pcb-mesh-routing</title>
+<style>
+:root {
+  --bg:      #07111F; --bg2: #0D1E30; --bg3: #112540; --bg4: #0A1828;
+  --border:  #1E3A5A; --border2: #2A4E6E;
+  --accent:  #3A8FD8; --accent2: #27C4A0;
+  --warn:    #FF6B6B; --ok: #4ECBA0; --dim: #4A7899;
+  --text:    #B8D4F0; --text2: #7AA8CC; --text3: #4A7899;
+  --top:     #FF8C69; --art02: #69C4FF; --art03: #A8FF69; --bot: #FFD069;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'SFMono-Regular','Cascadia Code','Consolas',monospace;min-height:100vh;display:flex;flex-direction:column}
+
+/* ── HEADER ── */
+header{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{width:34px;height:34px;background:var(--bg3);border:1.5px solid var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.title-block .t1{font-size:14px;font-weight:700;color:var(--accent)}
+.title-block .t2{font-size:10px;color:var(--text3);margin-top:1px}
+.header-pills{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto;align-items:center}
+.pill{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:2px 9px;font-size:10px;color:var(--text2)}
+.pill b{color:var(--text)}
+.pill.warn{border-color:var(--warn);color:var(--warn)}
+.pill.ok  {border-color:var(--ok);color:var(--ok)}
+
+/* ── COMMIT SELECTOR ── */
+.commit-bar{background:var(--bg4);border-bottom:2px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:10px}
+.cb-label{font-size:10px;color:var(--text3);letter-spacing:.8px;text-transform:uppercase;white-space:nowrap}
+.commit-selector{position:relative;flex:1;max-width:680px}
+.cs-btn{
+  width:100%;background:var(--bg3);border:1.5px solid var(--border2);border-radius:6px;
+  padding:7px 12px;cursor:pointer;display:flex;align-items:center;gap:10px;
+  transition:border-color .15s;font-family:inherit;color:var(--text);font-size:12px;text-align:left
+}
+.cs-btn:hover{border-color:var(--accent)}
+.cs-btn.open{border-color:var(--accent);border-bottom-left-radius:0;border-bottom-right-radius:0}
+.cs-hash{color:var(--accent);font-weight:700;min-width:58px}
+.cs-msg{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text)}
+.cs-date{color:var(--text3);font-size:10px;white-space:nowrap}
+.cs-xcount{font-size:10px;padding:2px 7px;border-radius:3px;white-space:nowrap}
+.cs-xcount.bad{background:#2A0E0E;color:var(--warn);border:1px solid #5A1A1A}
+.cs-xcount.good{background:#0A1E18;color:var(--ok);border:1px solid #1A4A38}
+.cs-arrow{color:var(--text3);font-size:10px;margin-left:auto;transition:transform .15s;flex-shrink:0}
+.cs-btn.open .cs-arrow{transform:rotate(180deg)}
+.cs-latest-tag{background:var(--accent);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;letter-spacing:.4px;flex-shrink:0}
+
+.cs-dropdown{
+  position:absolute;left:0;right:0;top:100%;z-index:100;
+  background:var(--bg3);border:1.5px solid var(--accent);
+  border-top:none;border-bottom-left-radius:6px;border-bottom-right-radius:6px;
+  max-height:340px;overflow-y:auto;display:none
+}
+.cs-dropdown.open{display:block}
+.cs-item{
+  display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer;
+  border-bottom:1px solid var(--border);transition:background .1s;font-size:11px
+}
+.cs-item:last-child{border-bottom:none}
+.cs-item:hover{background:var(--bg2)}
+.cs-item.selected{background:#0E2035}
+.cs-item .ci-hash{color:var(--accent);font-weight:700;min-width:58px;font-size:11px}
+.cs-item .ci-msg{flex:1;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cs-item .ci-date{color:var(--text3);font-size:10px;white-space:nowrap}
+.cs-item .ci-x{font-size:10px;padding:1px 6px;border-radius:3px;white-space:nowrap}
+.cs-item .ci-x.bad{background:#2A0E0E;color:var(--warn)}
+.cs-item .ci-x.good{background:#0A1E18;color:var(--ok)}
+
+/* ── CONTROLS ── */
+.controls{background:var(--bg2);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.layer-tabs{display:flex;gap:5px}
+.tab-btn{
+  background:var(--bg3);border:1.5px solid var(--border);border-radius:5px;
+  color:var(--text2);font-family:inherit;font-size:11px;padding:5px 14px;
+  cursor:pointer;transition:all .15s;font-weight:700;letter-spacing:.3px;position:relative
+}
+.tab-btn:hover{border-color:var(--accent);color:var(--text)}
+.tab-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.cross-badge{
+  position:absolute;top:-7px;right:-7px;background:var(--warn);color:#fff;
+  border-radius:10px;font-size:9px;padding:1px 5px;font-weight:700;display:none
+}
+.tab-btn.has-cross .cross-badge{display:block}
+.sep{width:1px;height:22px;background:var(--border);flex-shrink:0}
+.mode-toggle{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text2)}
+.tog-track{width:42px;height:20px;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;position:relative;cursor:pointer;transition:background .2s}
+.tog-track.on{background:#1D2E1A;border-color:var(--warn)}
+.tog-thumb{position:absolute;top:2px;left:2px;width:14px;height:14px;background:var(--dim);border-radius:7px;transition:left .2s,background .2s}
+.tog-track.on .tog-thumb{left:24px;background:var(--warn)}
+.mode-lbl{min-width:64px;font-size:11px}
+
+/* ── MAIN ── */
+main{flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:14px}
+.img-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;position:relative;min-height:120px}
+.img-wrap img{width:100%;display:block;transition:opacity .2s;opacity:0}
+.img-wrap img.loaded{opacity:1}
+.img-load-msg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--text3);pointer-events:none}
+
+/* ── CROSSING PANEL ── */
+.cross-panel{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 18px}
+.panel-title{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.xtable{width:100%;border-collapse:collapse;font-size:11px}
+.xtable th{text-align:left;color:var(--text3);border-bottom:1px solid var(--border);padding:3px 10px 5px 0;font-weight:600;letter-spacing:.4px}
+.xtable td{padding:4px 10px 4px 0;border-bottom:1px solid #0E2035;color:var(--text);vertical-align:top}
+.xtable tr:last-child td{border-bottom:none}
+.ntag{display:inline-block;background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:1px 6px;font-size:10px;color:var(--accent);margin:1px 2px 1px 0}
+.coord{color:var(--text3);font-size:10px}
+.no-cross{color:var(--ok);font-size:11px;padding:3px 0}
+
+/* ── LAYER STRIP ── */
+.lyr-strip{display:flex;gap:9px;flex-wrap:wrap}
+.lyr-card{flex:1;min-width:130px;background:var(--bg2);border:1.5px solid var(--border);border-radius:7px;padding:9px 13px;cursor:pointer;transition:border-color .15s}
+.lyr-card:hover,.lyr-card.active-card{border-color:var(--accent);background:var(--bg3)}
+.lyr-card.bad-card{border-color:var(--warn)!important}
+.lyr-card .lname{font-size:13px;font-weight:700;margin-bottom:3px}
+.lyr-card .lstat{font-size:10px;color:var(--text3);margin-top:1px}
+.lyr-card .lstat.bad{color:var(--warn)} .lyr-card .lstat.good{color:var(--ok)}
+
+/* ── FOOTER ── */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:6px 20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-size:10px;color:var(--text3)}
+
+/* ── LOADING ── */
+#splash{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;gap:12px;font-size:12px;color:var(--text2)}
+.spin{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* scrollbar */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<div id="splash"><div class="spin"></div><div>Loading routing history…</div></div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">🔬</div>
+  <div class="title-block">
+    <div class="t1">PCB Routing Viewer</div>
+    <div class="t2">pcb-mesh-routing · FPC camera ribbon 145.7×20.58 mm · 4-layer</div>
+  </div>
+  <div class="header-pills">
+    <div class="pill">commit <b id="ph-hash">—</b></div>
+    <div class="pill">nets <b id="ph-nets">—</b></div>
+    <div class="pill" id="ph-xpill">crossings <b id="ph-cross">—</b></div>
+    <div class="pill">updated <b id="ph-date">—</b></div>
+  </div>
+</header>
+
+<!-- COMMIT SELECTOR BAR -->
+<div class="commit-bar">
+  <span class="cb-label">Commit</span>
+  <div class="commit-selector" id="commit-selector">
+    <button class="cs-btn" id="cs-btn" onclick="toggleDropdown()">
+      <span class="cs-hash" id="cs-hash">—</span>
+      <span class="cs-msg"  id="cs-msg">Loading…</span>
+      <span class="cs-date" id="cs-date"></span>
+      <span class="cs-xcount" id="cs-xc"></span>
+      <span class="cs-latest-tag" id="cs-latest" style="display:none">LATEST</span>
+      <span class="cs-arrow">▼</span>
+    </button>
+    <div class="cs-dropdown" id="cs-dropdown"></div>
+  </div>
+</div>
+
+<!-- LAYER / MODE CONTROLS -->
+<div class="controls">
+  <div class="layer-tabs">
+    <button class="tab-btn active" data-lyr="TOP"    onclick="selectLayer('TOP')">TOP    <span class="cross-badge" id="bd-TOP"></span></button>
+    <button class="tab-btn"        data-lyr="ART02"  onclick="selectLayer('ART02')">ART02  <span class="cross-badge" id="bd-ART02"></span></button>
+    <button class="tab-btn"        data-lyr="ART03"  onclick="selectLayer('ART03')">ART03  <span class="cross-badge" id="bd-ART03"></span></button>
+    <button class="tab-btn"        data-lyr="BOTTOM" onclick="selectLayer('BOTTOM')">BOTTOM <span class="cross-badge" id="bd-BOTTOM"></span></button>
+  </div>
+  <div class="sep"></div>
+  <div class="mode-toggle">
+    <span>Clean</span>
+    <div class="tog-track" id="tog" onclick="toggleMode()"><div class="tog-thumb"></div></div>
+    <span class="mode-lbl" id="mode-lbl">Marked ✕</span>
+  </div>
+</div>
+
+<!-- IMAGE -->
+<main>
+  <div class="img-wrap">
+    <div class="img-load-msg" id="img-msg">Loading…</div>
+    <img id="layer-img" src="" alt="" onload="onImgLoad()" onerror="onImgErr()">
+  </div>
+
+  <!-- CROSSING PANEL -->
+  <div class="cross-panel">
+    <div class="panel-title">Crossing Report — <span id="panel-lyr">TOP</span></div>
+    <div id="cross-list"></div>
+  </div>
+
+  <!-- LAYER STRIP -->
+  <div class="lyr-strip" id="lyr-strip"></div>
+</main>
+
+<footer>
+  <span>Auto-generated by <code>run_6net_simple.py</code> · Area-First corridor routing · <a href="https://github.com/pcb-kelsie/pcb-mesh-routing" style="color:var(--accent);text-decoration:none">GitHub ↗</a></span>
+  <span id="footer-gen"></span>
+</footer>
+
+<script>
+const LAYERS = ['TOP','ART02','ART03','BOTTOM'];
+const LYR_COL = {TOP:'#FF8C69', ART02:'#69C4FF', ART03:'#A8FF69', BOTTOM:'#FFD069'};
+
+const state = { commit: null, layer: 'TOP', marked: false, history: null };
+
+/* ───── fetch history.json ───── */
+async function init() {
+  try {
+    const r = await fetch('data/history.json?t=' + Date.now());
+    if (!r.ok) throw new Error(r.status);
+    state.history = await r.json();
+  } catch(e) {
+    document.getElementById('splash').innerHTML =
+      '<div style="color:#FF6B6B;font-size:13px">⚠ data/history.json not found.<br>Run the routing script first.</div>';
+    return;
+  }
+  document.getElementById('splash').style.display = 'none';
+
+  const latest = state.history.latest || state.history.history[0]?.hash;
+  buildDropdown();
+  selectCommit(latest, true);
+}
+
+/* ───── build dropdown items ───── */
+function buildDropdown() {
+  const drop = document.getElementById('cs-dropdown');
+  drop.innerHTML = '';
+  state.history.history.forEach((entry, i) => {
+    const xc = entry.total_crosses ?? 0;
+    const isLatest = (i === 0);
+    const div = document.createElement('div');
+    div.className = 'cs-item' + (i === 0 ? ' selected' : '');
+    div.dataset.hash = entry.hash;
+    div.onclick = () => { selectCommit(entry.hash); closeDropdown(); };
+    const dateShort = (entry.commit_date || entry.generated_at || '').slice(0,16);
+    div.innerHTML = `
+      <span class="ci-hash">${entry.hash}</span>
+      <span class="ci-msg">${esc(entry.message || '—')}</span>
+      <span class="ci-date">${dateShort}</span>
+      ${isLatest ? '<span style="background:var(--accent);color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;flex-shrink:0">LATEST</span>' : ''}
+      <span class="ci-x ${xc>0?'bad':'good'}">${xc>0?'⚠'+xc:'✓'}</span>
+    `;
+    drop.appendChild(div);
+  });
+}
+
+/* ───── select commit ───── */
+function selectCommit(hash, initial) {
+  state.commit = hash;
+  const entry = state.history.history.find(e => e.hash === hash);
+  if (!entry) return;
+  const isLatest = (hash === state.history.latest);
+  const xc = entry.total_crosses ?? 0;
+  const dateShort = (entry.commit_date || entry.generated_at || '').slice(0,16);
+
+  // update button display
+  document.getElementById('cs-hash').textContent = hash;
+  document.getElementById('cs-msg').textContent  = entry.message || '—';
+  document.getElementById('cs-date').textContent = dateShort;
+  const xcEl = document.getElementById('cs-xc');
+  xcEl.textContent = xc > 0 ? '⚠ '+xc+' crossings' : '✓ clean';
+  xcEl.className = 'cs-xcount ' + (xc > 0 ? 'bad' : 'good');
+  const latEl = document.getElementById('cs-latest');
+  latEl.style.display = isLatest ? 'inline-block' : 'none';
+
+  // highlight selected item in dropdown
+  document.querySelectorAll('.cs-item').forEach(el => {
+    el.classList.toggle('selected', el.dataset.hash === hash);
+  });
+
+  // update header pills
+  document.getElementById('ph-hash').textContent  = hash;
+  document.getElementById('ph-nets').textContent  = entry.total_nets ?? '?';
+  document.getElementById('ph-cross').textContent = xc;
+  const xpill = document.getElementById('ph-xpill');
+  xpill.className = 'pill ' + (xc > 0 ? 'warn' : 'ok');
+  document.getElementById('ph-date').textContent  = dateShort;
+  document.getElementById('footer-gen').textContent = 'Generated: ' + (entry.generated_at || '');
+
+  // update layer badges & panels
+  updateLayerBadges(entry);
+  renderImage();
+  renderCrossPanel();
+  renderStrip(entry);
+}
+
+/* ───── dropdown toggle ───── */
+function toggleDropdown() {
+  const btn  = document.getElementById('cs-btn');
+  const drop = document.getElementById('cs-dropdown');
+  const open = drop.classList.contains('open');
+  btn.classList.toggle('open', !open);
+  drop.classList.toggle('open', !open);
+}
+function closeDropdown() {
+  document.getElementById('cs-btn').classList.remove('open');
+  document.getElementById('cs-dropdown').classList.remove('open');
+}
+document.addEventListener('click', e => {
+  if (!document.getElementById('commit-selector').contains(e.target)) closeDropdown();
+});
+
+/* ───── layer badges ───── */
+function updateLayerBadges(entry) {
+  LAYERS.forEach(l => {
+    const xc = entry.layers?.[l]?.cross_count ?? 0;
+    const btn = document.querySelector(`.tab-btn[data-lyr="${l}"]`);
+    const bd  = document.getElementById('bd-'+l);
+    if (btn) btn.classList.toggle('has-cross', xc > 0);
+    if (bd)  { bd.textContent = xc; }
+  });
+}
+
+/* ───── image path ───── */
+function imgPath() {
+  const mode = state.marked ? 'marked' : 'clean';
+  // always use history/{hash}/ — 'images/' is just a latest alias
+  return `history/${state.commit}/${state.layer}_${mode}.png?t=${Date.now()}`;
+}
+function renderImage() {
+  const img = document.getElementById('layer-img');
+  const msg = document.getElementById('img-msg');
+  img.classList.remove('loaded');
+  msg.textContent = 'Loading…';
+  msg.style.color = 'var(--text3)';
+  msg.style.display = 'flex';
+  img.src = imgPath();
+}
+function onImgLoad() {
+  document.getElementById('layer-img').classList.add('loaded');
+  document.getElementById('img-msg').style.display = 'none';
+}
+function onImgErr() {
+  const msg = document.getElementById('img-msg');
+  msg.textContent = '⚠ Image not found for this commit — run the routing script';
+  msg.style.color = 'var(--warn)';
+}
+
+/* ───── crossing panel ───── */
+function renderCrossPanel() {
+  document.getElementById('panel-lyr').textContent = state.layer;
+  const list = document.getElementById('cross-list');
+  list.innerHTML = '';
+  const entry = state.history?.history.find(e => e.hash === state.commit);
+  const crosses = entry?.layers?.[state.layer]?.crossings ?? [];
+  if (!crosses.length) {
+    list.innerHTML = `<div class="no-cross">✓ No crossings detected on ${state.layer}</div>`;
+    return;
+  }
+  const t = document.createElement('table');
+  t.className = 'xtable';
+  t.innerHTML = '<thead><tr><th>#</th><th>Net A</th><th>Net B</th><th>Coordinate (mm)</th></tr></thead>';
+  const tb = t.createTBody();
+  crosses.forEach((c,i) => {
+    const na = shortNet(c.netA), nb = shortNet(c.netB);
+    const tr = tb.insertRow();
+    tr.innerHTML = `<td style="color:var(--text3)">${i+1}</td>
+      <td><span class="ntag">${esc(na)}</span></td>
+      <td><span class="ntag">${esc(nb)}</span></td>
+      <td class="coord">(${c.x.toFixed(3)}, ${c.y.toFixed(3)})</td>`;
+  });
+  list.appendChild(t);
+}
+
+/* ───── layer strip ───── */
+function renderStrip(entry) {
+  const strip = document.getElementById('lyr-strip');
+  strip.innerHTML = '';
+  LAYERS.forEach(lyr => {
+    const ld  = entry?.layers?.[lyr];
+    const nets = ld?.net_count ?? '?';
+    const xc   = ld?.cross_count ?? 0;
+    const card = document.createElement('div');
+    card.className = 'lyr-card' + (lyr===state.layer?' active-card':'') + (xc>0?' bad-card':'');
+    card.onclick = () => selectLayer(lyr);
+    card.innerHTML = `
+      <div class="lname" style="color:${LYR_COL[lyr]}">${lyr}</div>
+      <div class="lstat">${nets} nets routed</div>
+      <div class="lstat ${xc>0?'bad':'good'}">${xc>0?'⚠ '+xc+' crossing'+(xc>1?'s':''):'✓ clean'}</div>`;
+    strip.appendChild(card);
+  });
+}
+
+/* ───── layer / mode selection ───── */
+function selectLayer(lyr) {
+  state.layer = lyr;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.lyr===lyr));
+  renderImage(); renderCrossPanel();
+  const entry = state.history?.history.find(e => e.hash === state.commit);
+  if (entry) renderStrip(entry);
+}
+function toggleMode() {
+  state.marked = !state.marked;
+  document.getElementById('tog').classList.toggle('on', state.marked);
+  document.getElementById('mode-lbl').textContent = state.marked ? 'Marked ✕' : 'Clean';
+  renderImage();
+}
+
+/* ───── helpers ───── */
+function shortNet(n){ return n.replace('CAM1_CSI1_','').replace('CAM1_','').replace('_SYS_AR1','').replace('_AR1',''); }
+function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+init();
+</script>
+</body>
+</html>
