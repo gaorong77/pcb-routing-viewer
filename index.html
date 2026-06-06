@@ -92,12 +92,76 @@ header{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 
 .tog-track.on .tog-thumb{left:24px;background:var(--warn)}
 .mode-lbl{min-width:64px;font-size:11px}
 
+/* ── ZOOM TOOLBAR ── */
+.zoom-bar{
+  background:var(--bg4);border-bottom:1px solid var(--border);
+  padding:5px 20px;display:flex;align-items:center;gap:8px;
+}
+.zoom-btn{
+  background:var(--bg3);border:1px solid var(--border2);border-radius:4px;
+  color:var(--text2);font-family:inherit;font-size:13px;font-weight:700;
+  width:26px;height:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .15s;flex-shrink:0;user-select:none;line-height:1;
+}
+.zoom-btn:hover{border-color:var(--accent);color:var(--text)}
+.zoom-btn:active{background:var(--bg2)}
+.zoom-level{
+  font-size:11px;color:var(--text2);min-width:48px;text-align:center;
+  background:var(--bg3);border:1px solid var(--border);border-radius:4px;
+  padding:2px 6px;
+}
+.zoom-reset{
+  background:var(--bg3);border:1px solid var(--border2);border-radius:4px;
+  color:var(--text3);font-family:inherit;font-size:10px;font-weight:700;
+  padding:3px 9px;cursor:pointer;letter-spacing:.4px;transition:all .15s;
+}
+.zoom-reset:hover{border-color:var(--accent);color:var(--text)}
+.zoom-hint{font-size:10px;color:var(--text3);margin-left:6px}
+.zoom-sep{width:1px;height:18px;background:var(--border);flex-shrink:0;margin:0 4px}
+
 /* ── MAIN ── */
 main{flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:14px}
-.img-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;position:relative;min-height:120px}
-.img-wrap img{width:100%;display:block;transition:opacity .2s;opacity:0}
-.img-wrap img.loaded{opacity:1}
-.img-load-msg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--text3);pointer-events:none}
+
+/* ── IMAGE VIEWPORT (zoom container) ── */
+.img-wrap{
+  background:var(--bg2);border:1px solid var(--border);border-radius:8px;
+  overflow:hidden;position:relative;min-height:120px;
+  cursor:grab;user-select:none;
+}
+.img-wrap.dragging{cursor:grabbing}
+.img-wrap.zoom1{cursor:default}  /* reset cursor when at 1× */
+
+/* The inner div holds the image and can be transformed */
+.img-canvas{
+  width:100%;height:100%;
+  transform-origin:0 0;
+  /* transition only for programmatic resets, not mouse drag */
+  will-change:transform;
+  position:relative;
+}
+.img-canvas.animate{transition:transform .22s ease}
+
+.img-canvas img{
+  width:100%;display:block;
+  transition:opacity .2s;opacity:0;
+  pointer-events:none;  /* let mouse events pass through to wrapper */
+  user-select:none;-webkit-user-drag:none;
+}
+.img-canvas img.loaded{opacity:1}
+
+.img-load-msg{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:12px;color:var(--text3);pointer-events:none;z-index:2;
+}
+
+/* Zoom indicator overlay (top-right of image) */
+.zoom-overlay{
+  position:absolute;top:8px;right:8px;z-index:10;
+  background:rgba(7,17,31,.82);border:1px solid var(--border2);
+  border-radius:4px;padding:3px 8px;font-size:10px;color:var(--text2);
+  pointer-events:none;transition:opacity .3s;opacity:0;
+}
+.zoom-overlay.visible{opacity:1}
 
 /* ── CROSSING PANEL ── */
 .cross-panel{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 18px}
@@ -106,8 +170,12 @@ main{flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:14px}
 .xtable th{text-align:left;color:var(--text3);border-bottom:1px solid var(--border);padding:3px 10px 5px 0;font-weight:600;letter-spacing:.4px}
 .xtable td{padding:4px 10px 4px 0;border-bottom:1px solid #0E2035;color:var(--text);vertical-align:top}
 .xtable tr:last-child td{border-bottom:none}
+/* Clickable crossing row → jump to that region */
+.xtable tbody tr{cursor:pointer;transition:background .1s}
+.xtable tbody tr:hover td{background:rgba(58,143,216,.08)}
 .ntag{display:inline-block;background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:1px 6px;font-size:10px;color:var(--accent);margin:1px 2px 1px 0}
 .coord{color:var(--text3);font-size:10px}
+.coord-link{color:var(--accent2);font-size:10px;text-decoration:underline;cursor:pointer}
 .no-cross{color:var(--ok);font-size:11px;padding:3px 0}
 
 /* ── LAYER STRIP ── */
@@ -184,16 +252,34 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:6px 20px
   </div>
 </div>
 
+<!-- ZOOM TOOLBAR -->
+<div class="zoom-bar">
+  <button class="zoom-btn" onclick="zoomStep(-1)" title="缩小 (-)">−</button>
+  <span class="zoom-level" id="zoom-level">100%</span>
+  <button class="zoom-btn" onclick="zoomStep(+1)" title="放大 (+)">+</button>
+  <div class="zoom-sep"></div>
+  <button class="zoom-reset" onclick="zoomReset(true)" title="重置 (R / 双击)">Reset</button>
+  <div class="zoom-sep"></div>
+  <span class="zoom-hint">滚轮缩放 · 拖拽平移 · 双击重置 · 点击交叉坐标跳转</span>
+</div>
+
 <!-- IMAGE -->
 <main>
-  <div class="img-wrap">
+  <div class="img-wrap" id="img-wrap">
     <div class="img-load-msg" id="img-msg">Loading…</div>
-    <img id="layer-img" src="" alt="" onload="onImgLoad()" onerror="onImgErr()">
+    <!-- zoom canvas: this element gets CSS transform -->
+    <div class="img-canvas" id="img-canvas">
+      <img id="layer-img" src="" alt="" onload="onImgLoad()" onerror="onImgErr()">
+    </div>
+    <!-- zoom level overlay inside image area -->
+    <div class="zoom-overlay" id="zoom-overlay">100%</div>
   </div>
 
   <!-- CROSSING PANEL -->
   <div class="cross-panel">
-    <div class="panel-title">Crossing Report — <span id="panel-lyr">TOP</span></div>
+    <div class="panel-title">Crossing Report — <span id="panel-lyr">TOP</span>
+      <span style="color:var(--text3);font-weight:400;font-size:9px;margin-left:8px">(点击行可跳转到交叉位置)</span>
+    </div>
     <div id="cross-list"></div>
   </div>
 
@@ -212,7 +298,190 @@ const LYR_COL = {TOP:'#FF8C69', ART02:'#69C4FF', ART03:'#A8FF69', BOTTOM:'#FFD06
 
 const state = { commit: null, layer: 'TOP', marked: false, history: null };
 
-/* ───── fetch history.json ───── */
+/* ═══════════════════════════════════════════════════════════════
+   ZOOM STATE
+   Board physical extent (mm): X 82.86–228.56, Y 93.43–114.01
+   The PNG is 400 DPI, ~12000 × 2400 px → we map mm → image fraction
+══════════════════════════════════════════════════════════════════ */
+const BOARD = { xMin:82.86, xMax:228.56, yMin:93.43, yMax:114.01 };
+
+const zoom = {
+  scale: 1,
+  tx: 0,           // translate X (pixels in wrapper space)
+  ty: 0,           // translate Y
+  dragging: false,
+  lastX: 0,
+  lastY: 0,
+  MIN: 1,
+  MAX: 20,
+  overlayTimer: null,
+};
+
+function applyTransform(animate) {
+  const canvas = document.getElementById('img-canvas');
+  if (animate) {
+    canvas.classList.add('animate');
+    setTimeout(() => canvas.classList.remove('animate'), 250);
+  } else {
+    canvas.classList.remove('animate');
+  }
+  canvas.style.transform = `translate(${zoom.tx}px,${zoom.ty}px) scale(${zoom.scale})`;
+
+  // update zoom level display
+  const pct = Math.round(zoom.scale * 100) + '%';
+  document.getElementById('zoom-level').textContent = pct;
+
+  // overlay flash
+  const ov = document.getElementById('zoom-overlay');
+  ov.textContent = pct;
+  ov.classList.add('visible');
+  clearTimeout(zoom.overlayTimer);
+  zoom.overlayTimer = setTimeout(() => ov.classList.remove('visible'), 1200);
+
+  // cursor style
+  const wrap = document.getElementById('img-wrap');
+  wrap.classList.toggle('zoom1', zoom.scale <= 1);
+}
+
+function clampTranslate() {
+  const wrap = document.getElementById('img-wrap');
+  const wW = wrap.clientWidth, wH = wrap.clientHeight;
+  // image natural display size after scale
+  const iW = wW * zoom.scale, iH = document.getElementById('layer-img').clientHeight * zoom.scale;
+  // clamp: image must cover at least part of the viewport
+  if (zoom.scale <= 1) { zoom.tx = 0; zoom.ty = 0; return; }
+  const maxTx = 0, minTx = wW - iW;
+  const maxTy = 0, minTy = wH - iH;
+  zoom.tx = Math.min(maxTx, Math.max(minTx, zoom.tx));
+  zoom.ty = Math.min(maxTy, Math.max(minTy, zoom.ty));
+}
+
+function zoomAt(mx, my, factor) {
+  const newScale = Math.max(zoom.MIN, Math.min(zoom.MAX, zoom.scale * factor));
+  if (newScale === zoom.scale) return;
+  const ratio = newScale / zoom.scale;
+  zoom.tx = mx - ratio * (mx - zoom.tx);
+  zoom.ty = my - ratio * (my - zoom.ty);
+  zoom.scale = newScale;
+  clampTranslate();
+  applyTransform(false);
+}
+
+function zoomStep(dir) {
+  const wrap = document.getElementById('img-wrap');
+  const cx = wrap.clientWidth / 2, cy = wrap.clientHeight / 2;
+  zoomAt(cx, cy, dir > 0 ? 1.35 : 1/1.35);
+}
+
+function zoomReset(animate) {
+  zoom.scale = 1; zoom.tx = 0; zoom.ty = 0;
+  applyTransform(animate);
+}
+
+/* Jump to a physical mm coordinate on the board */
+function zoomToMM(xMM, yMM, targetScale) {
+  const wrap = document.getElementById('img-wrap');
+  const img  = document.getElementById('layer-img');
+  const wW   = wrap.clientWidth, wH = wrap.clientHeight;
+  const iW   = img.clientWidth,  iH = img.clientHeight;
+
+  // fraction within image (0–1)
+  const fx = (xMM - BOARD.xMin) / (BOARD.xMax - BOARD.xMin);
+  const fy = (yMM - BOARD.yMin) / (BOARD.yMax - BOARD.yMin);
+
+  // pixel in image element (before transform)
+  const px = fx * iW, py = fy * iH;
+
+  // target scale
+  zoom.scale = targetScale || 6;
+
+  // center this point in viewport
+  zoom.tx = wW / 2 - px * zoom.scale;
+  zoom.ty = wH / 2 - py * zoom.scale;
+  clampTranslate();
+  applyTransform(true);
+}
+
+/* ── wheel zoom ── */
+document.addEventListener('DOMContentLoaded', () => {
+  const wrap = document.getElementById('img-wrap');
+
+  wrap.addEventListener('wheel', e => {
+    e.preventDefault();
+    const rect = wrap.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    const factor = e.deltaY < 0 ? 1.15 : 1/1.15;
+    zoomAt(mx, my, factor);
+  }, { passive: false });
+
+  /* ── mouse drag pan ── */
+  wrap.addEventListener('mousedown', e => {
+    if (zoom.scale <= 1) return;
+    if (e.button !== 0) return;
+    zoom.dragging = true;
+    zoom.lastX = e.clientX;
+    zoom.lastY = e.clientY;
+    wrap.classList.add('dragging');
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!zoom.dragging) return;
+    const dx = e.clientX - zoom.lastX;
+    const dy = e.clientY - zoom.lastY;
+    zoom.lastX = e.clientX;
+    zoom.lastY = e.clientY;
+    zoom.tx += dx;
+    zoom.ty += dy;
+    clampTranslate();
+    applyTransform(false);
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!zoom.dragging) return;
+    zoom.dragging = false;
+    document.getElementById('img-wrap').classList.remove('dragging');
+  });
+
+  /* ── double-click reset ── */
+  wrap.addEventListener('dblclick', () => zoomReset(true));
+
+  /* ── touch pinch zoom ── */
+  let lastTouchDist = null, lastTouchMidX = 0, lastTouchMidY = 0;
+  wrap.addEventListener('touchstart', e => {
+    if (e.touches.length === 2) {
+      const t = e.touches;
+      lastTouchDist = Math.hypot(t[0].clientX-t[1].clientX, t[0].clientY-t[1].clientY);
+      lastTouchMidX = (t[0].clientX+t[1].clientX)/2 - wrap.getBoundingClientRect().left;
+      lastTouchMidY = (t[0].clientY+t[1].clientY)/2 - wrap.getBoundingClientRect().top;
+    }
+  }, { passive: true });
+  wrap.addEventListener('touchmove', e => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      const t = e.touches;
+      const dist = Math.hypot(t[0].clientX-t[1].clientX, t[0].clientY-t[1].clientY);
+      if (lastTouchDist) zoomAt(lastTouchMidX, lastTouchMidY, dist / lastTouchDist);
+      lastTouchDist = dist;
+    }
+  }, { passive: false });
+  wrap.addEventListener('touchend', () => { lastTouchDist = null; });
+});
+
+/* ── keyboard shortcuts ── */
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON') return;
+  if (e.key === 'r' || e.key === 'R') { zoomReset(true); return; }
+  if (e.key === '+' || e.key === '=') { zoomStep(+1); return; }
+  if (e.key === '-' || e.key === '_') { zoomStep(-1); return; }
+  if (e.key === '0') { zoomReset(true); return; }
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   DATA / RENDER
+══════════════════════════════════════════════════════════════════ */
+
 async function init() {
   try {
     const r = await fetch('data/history.json?t=' + Date.now());
@@ -224,13 +493,11 @@ async function init() {
     return;
   }
   document.getElementById('splash').style.display = 'none';
-
   const latest = state.history.latest || state.history.history[0]?.hash;
   buildDropdown();
   selectCommit(latest, true);
 }
 
-/* ───── build dropdown items ───── */
 function buildDropdown() {
   const drop = document.getElementById('cs-dropdown');
   drop.innerHTML = '';
@@ -253,7 +520,6 @@ function buildDropdown() {
   });
 }
 
-/* ───── select commit ───── */
 function selectCommit(hash, initial) {
   state.commit = hash;
   const entry = state.history.history.find(e => e.hash === hash);
@@ -262,22 +528,18 @@ function selectCommit(hash, initial) {
   const xc = entry.total_crosses ?? 0;
   const dateShort = (entry.commit_date || entry.generated_at || '').slice(0,16);
 
-  // update button display
   document.getElementById('cs-hash').textContent = hash;
   document.getElementById('cs-msg').textContent  = entry.message || '—';
   document.getElementById('cs-date').textContent = dateShort;
   const xcEl = document.getElementById('cs-xc');
   xcEl.textContent = xc > 0 ? '⚠ '+xc+' crossings' : '✓ clean';
   xcEl.className = 'cs-xcount ' + (xc > 0 ? 'bad' : 'good');
-  const latEl = document.getElementById('cs-latest');
-  latEl.style.display = isLatest ? 'inline-block' : 'none';
+  document.getElementById('cs-latest').style.display = isLatest ? 'inline-block' : 'none';
 
-  // highlight selected item in dropdown
   document.querySelectorAll('.cs-item').forEach(el => {
     el.classList.toggle('selected', el.dataset.hash === hash);
   });
 
-  // update header pills
   document.getElementById('ph-hash').textContent  = hash;
   document.getElementById('ph-nets').textContent  = entry.total_nets ?? '?';
   document.getElementById('ph-cross').textContent = xc;
@@ -286,14 +548,12 @@ function selectCommit(hash, initial) {
   document.getElementById('ph-date').textContent  = dateShort;
   document.getElementById('footer-gen').textContent = 'Generated: ' + (entry.generated_at || '');
 
-  // update layer badges & panels
   updateLayerBadges(entry);
   renderImage();
   renderCrossPanel();
   renderStrip(entry);
 }
 
-/* ───── dropdown toggle ───── */
 function toggleDropdown() {
   const btn  = document.getElementById('cs-btn');
   const drop = document.getElementById('cs-dropdown');
@@ -309,21 +569,18 @@ document.addEventListener('click', e => {
   if (!document.getElementById('commit-selector').contains(e.target)) closeDropdown();
 });
 
-/* ───── layer badges ───── */
 function updateLayerBadges(entry) {
   LAYERS.forEach(l => {
     const xc = entry.layers?.[l]?.cross_count ?? 0;
     const btn = document.querySelector(`.tab-btn[data-lyr="${l}"]`);
     const bd  = document.getElementById('bd-'+l);
     if (btn) btn.classList.toggle('has-cross', xc > 0);
-    if (bd)  { bd.textContent = xc; }
+    if (bd)  bd.textContent = xc;
   });
 }
 
-/* ───── image path ───── */
 function imgPath() {
   const mode = state.marked ? 'marked' : 'clean';
-  // always use history/{hash}/ — 'images/' is just a latest alias
   return `history/${state.commit}/${state.layer}_${mode}.png?t=${Date.now()}`;
 }
 function renderImage() {
@@ -334,10 +591,13 @@ function renderImage() {
   msg.style.color = 'var(--text3)';
   msg.style.display = 'flex';
   img.src = imgPath();
+  // reset zoom on layer/commit change
+  zoomReset(false);
 }
 function onImgLoad() {
   document.getElementById('layer-img').classList.add('loaded');
   document.getElementById('img-msg').style.display = 'none';
+  applyTransform(false);
 }
 function onImgErr() {
   const msg = document.getElementById('img-msg');
@@ -345,7 +605,7 @@ function onImgErr() {
   msg.style.color = 'var(--warn)';
 }
 
-/* ───── crossing panel ───── */
+/* ── crossing panel (rows are clickable → zoom to coordinate) ── */
 function renderCrossPanel() {
   document.getElementById('panel-lyr').textContent = state.layer;
   const list = document.getElementById('cross-list');
@@ -360,18 +620,22 @@ function renderCrossPanel() {
   t.className = 'xtable';
   t.innerHTML = '<thead><tr><th>#</th><th>Net A</th><th>Net B</th><th>Coordinate (mm)</th></tr></thead>';
   const tb = t.createTBody();
-  crosses.forEach((c,i) => {
+  crosses.forEach((c, i) => {
     const na = shortNet(c.netA), nb = shortNet(c.netB);
     const tr = tb.insertRow();
-    tr.innerHTML = `<td style="color:var(--text3)">${i+1}</td>
+    tr.title = `点击放大查看 (${c.x.toFixed(3)}, ${c.y.toFixed(3)}) mm`;
+    tr.onclick = () => {
+      zoomToMM(c.x, c.y, 8);
+    };
+    tr.innerHTML = `
+      <td style="color:var(--text3)">${i+1}</td>
       <td><span class="ntag">${esc(na)}</span></td>
       <td><span class="ntag">${esc(nb)}</span></td>
-      <td class="coord">(${c.x.toFixed(3)}, ${c.y.toFixed(3)})</td>`;
+      <td class="coord-link">(${c.x.toFixed(3)}, ${c.y.toFixed(3)})</td>`;
   });
   list.appendChild(t);
 }
 
-/* ───── layer strip ───── */
 function renderStrip(entry) {
   const strip = document.getElementById('lyr-strip');
   strip.innerHTML = '';
@@ -390,7 +654,6 @@ function renderStrip(entry) {
   });
 }
 
-/* ───── layer / mode selection ───── */
 function selectLayer(lyr) {
   state.layer = lyr;
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.lyr===lyr));
@@ -405,7 +668,6 @@ function toggleMode() {
   renderImage();
 }
 
-/* ───── helpers ───── */
 function shortNet(n){ return n.replace('CAM1_CSI1_','').replace('CAM1_','').replace('_SYS_AR1','').replace('_AR1',''); }
 function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
 
