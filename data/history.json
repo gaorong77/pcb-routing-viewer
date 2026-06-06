@@ -1,6 +1,135 @@
 {
   "history": [
     {
+      "hash": "f122bfe",
+      "message": "feat: zoom/pan on PCB image — wheel zoom, drag pan, dbl-click reset, cro",
+      "commit_date": "2026-06-06 14:50",
+      "generated_at": "2026-06-06 15:15 UTC",
+      "total_nets": 23,
+      "total_crosses": 16,
+      "layers": {
+        "TOP": {
+          "net_count": 5,
+          "cross_count": 0,
+          "crossings": []
+        },
+        "ART02": {
+          "net_count": 6,
+          "cross_count": 6,
+          "crossings": [
+            {
+              "x": 225.4105,
+              "y": 105.2802,
+              "netA": "I2S1_CLK_SYS_AR1",
+              "netB": "SSC_SPI_MOSI"
+            },
+            {
+              "x": 225.4025,
+              "y": 105.096,
+              "netA": "I2S1_CLK_SYS_AR1",
+              "netB": "CAM1_I2C_SEL_AR1"
+            },
+            {
+              "x": 225.3944,
+              "y": 104.9118,
+              "netA": "I2S1_CLK_SYS_AR1",
+              "netB": "SSC_SPI_CS"
+            },
+            {
+              "x": 225.3891,
+              "y": 104.7255,
+              "netA": "I2S1_CLK_SYS_AR1",
+              "netB": "I2S1_MISO_SYS_AR1"
+            },
+            {
+              "x": 225.3891,
+              "y": 104.535,
+              "netA": "I2S1_CLK_SYS_AR1",
+              "netB": "I2S1_WS_SYS_AR1"
+            },
+            {
+              "x": 226.4271,
+              "y": 104.2941,
+              "netA": "SSC_SPI_MOSI",
+              "netB": "CAM1_I2C_SEL_AR1"
+            }
+          ]
+        },
+        "ART03": {
+          "net_count": 8,
+          "cross_count": 6,
+          "crossings": [
+            {
+              "x": 225.7167,
+              "y": 105.0405,
+              "netA": "I2S1_MOSI_SYS_AR1",
+              "netB": "SSC_SPI_MISO"
+            },
+            {
+              "x": 225.7258,
+              "y": 104.843,
+              "netA": "I2S1_MOSI_SYS_AR1",
+              "netB": "CAM1_I2C_SDA_AR1"
+            },
+            {
+              "x": 86.0903,
+              "y": 96.0637,
+              "netA": "I2S1_MOSI_SYS_AR1",
+              "netB": "CAM1_RESET_N_AR1"
+            },
+            {
+              "x": 226.077,
+              "y": 104.5681,
+              "netA": "SSC_SPI_MISO",
+              "netB": "CAM1_I2C_SDA_AR1"
+            },
+            {
+              "x": 85.3539,
+              "y": 95.39,
+              "netA": "SSC_SPI_MISO",
+              "netB": "CAM1_RESET_N_AR1"
+            },
+            {
+              "x": 84.1712,
+              "y": 95.608,
+              "netA": "CAM1_I2C_SDA_AR1",
+              "netB": "CAM1_RESET_N_AR1"
+            }
+          ]
+        },
+        "BOTTOM": {
+          "net_count": 4,
+          "cross_count": 4,
+          "crossings": [
+            {
+              "x": 152.1258,
+              "y": 107.8783,
+              "netA": "CAM1_CSI1_B0_LN0_P",
+              "netB": "CAM1_CSI1_A1_CLK_M"
+            },
+            {
+              "x": 92.5385,
+              "y": 98.7242,
+              "netA": "CAM1_CSI1_B0_LN0_P",
+              "netB": "CAM1_IOVDD_1P8V"
+            },
+            {
+              "x": 91.7947,
+              "y": 98.8024,
+              "netA": "CAM1_CSI1_A1_CLK_M",
+              "netB": "CAM1_IOVDD_1P8V"
+            },
+            {
+              "x": 100.2622,
+              "y": 107.6902,
+              "netA": "PDM1_CLK",
+              "netB": "VMIC1"
+            }
+          ]
+        }
+      }
+    },
+    {
       "hash": "9f176e8",
       "message": "feat: dual-repo architecture — code private, Pages public",
       "commit_date": "2026-06-06 06:45",
@@ -463,5 +592,5 @@
       }
     }
   ],
-  "latest": "9f176e8"
+  "latest": "f122bfe"
 }
