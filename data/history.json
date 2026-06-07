@@ -4,9 +4,9 @@
       "hash": "08440b5",
       "message": "fix: midwire_via_pass left/right split — 27 nets, 10 crossings (↓9%)",
       "commit_date": "2026-06-07 06:31",
-      "generated_at": "2026-06-07 06:46 UTC",
+      "generated_at": "2026-06-07 06:50 UTC",
       "total_nets": 27,
-      "total_crosses": 19,
+      "total_crosses": 20,
       "layers": {
         "TOP": {
           "net_count": 8,
@@ -22,49 +22,55 @@
         },
         "ART02": {
           "net_count": 7,
-          "cross_count": 7,
+          "cross_count": 8,
           "crossings": [
             {
-              "x": 83.4436,
-              "y": 95.8604,
-              "netA": "CAM1_EXT_PWR_EN",
+              "x": 225.4105,
+              "y": 105.2802,
+              "netA": "I2S1_CLK_SYS_AR1",
               "netB": "SSC_SPI_MOSI"
             },
             {
-              "x": 83.4639,
-              "y": 96.0539,
-              "netA": "CAM1_I2C_SEL_AR1",
-              "netB": "SSC_SPI_MOSI"
+              "x": 225.4025,
+              "y": 105.096,
+              "netA": "I2S1_CLK_SYS_AR1",
+              "netB": "CAM1_EXT_PWR_EN"
             },
             {
-              "x": 84.0586,
-              "y": 95.9717,
-              "netA": "CAM1_I2C_SEL_AR1",
-              "netB": "I2S1_CLK_SYS_AR1"
+              "x": 225.3944,
+              "y": 104.9118,
+              "netA": "I2S1_CLK_SYS_AR1",
+              "netB": "CAM1_I2C_SEL_AR1"
             },
             {
-              "x": 85.3942,
-              "y": 95.14,
+              "x": 225.3891,
+              "y": 104.7255,
+              "netA": "I2S1_CLK_SYS_AR1",
+              "netB": "SSC_SPI_CS"
+            },
+            {
+              "x": 225.3891,
+              "y": 104.535,
+              "netA": "I2S1_CLK_SYS_AR1",
+              "netB": "I2S1_MISO_SYS_AR1"
+            },
+            {
+              "x": 225.3891,
+              "y": 104.3445,
+              "netA": "I2S1_CLK_SYS_AR1",
+              "netB": "I2S1_WS_SYS_AR1"
+            },
+            {
+              "x": 226.4271,
+              "y": 104.2941,
               "netA": "SSC_SPI_MOSI",
-              "netB": "I2S1_CLK_SYS_AR1"
+              "netB": "CAM1_EXT_PWR_EN"
             },
             {
-              "x": 84.0769,
-              "y": 96.1458,
-              "netA": "SSC_SPI_CS",
-              "netB": "I2S1_CLK_SYS_AR1"
-            },
-            {
-              "x": 84.1135,
-              "y": 96.4939,
-              "netA": "I2S1_MISO_SYS_AR1",
-              "netB": "I2S1_CLK_SYS_AR1"
-            },
-            {
-              "x": 84.1516,
-              "y": 96.8573,
-              "netA": "I2S1_WS_SYS_AR1",
-              "netB": "I2S1_CLK_SYS_AR1"
+              "x": 226.4364,
+              "y": 104.0963,
+              "netA": "SSC_SPI_MOSI",
+              "netB": "CAM1_I2C_SEL_AR1"
             }
           ]
         },
