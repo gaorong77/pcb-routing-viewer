@@ -4,7 +4,7 @@
       "hash": "4df2910",
       "message": "chore: update progress log",
       "commit_date": "2026-06-07 02:55",
-      "generated_at": "2026-06-07 06:02 UTC",
+      "generated_at": "2026-06-07 06:05 UTC",
       "total_nets": 27,
       "total_crosses": 20,
       "layers": {
@@ -115,22 +115,22 @@
           "cross_count": 6,
           "crossings": [
             {
-              "x": 225.7167,
-              "y": 105.0405,
-              "netA": "I2S1_MOSI_SYS_AR1",
+              "x": 83.2783,
+              "y": 95.7234,
+              "netA": "CAM1_I2C_SDA_AR1",
               "netB": "SSC_SPI_MISO"
             },
             {
-              "x": 225.7258,
-              "y": 104.843,
-              "netA": "I2S1_MOSI_SYS_AR1",
-              "netB": "CAM1_I2C_SDA_AR1"
+              "x": 83.4258,
+              "y": 95.6918,
+              "netA": "CAM1_I2C_SDA_AR1",
+              "netB": "I2S1_MOSI_SYS_AR1"
             },
             {
-              "x": 226.077,
-              "y": 104.5681,
+              "x": 85.9643,
+              "y": 94.9346,
               "netA": "SSC_SPI_MISO",
-              "netB": "CAM1_I2C_SDA_AR1"
+              "netB": "I2S1_MOSI_SYS_AR1"
             },
             {
               "x": 92.5136,
