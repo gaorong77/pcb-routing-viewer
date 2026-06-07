@@ -4,9 +4,9 @@
       "hash": "77fa760",
       "message": "fix: corridors[tgt_layer] in via/midwire passes; try both nets per pair;",
       "commit_date": "2026-06-07 13:24",
-      "generated_at": "2026-06-07 13:58 UTC",
+      "generated_at": "2026-06-07 14:06 UTC",
       "total_nets": 27,
-      "total_crosses": 9,
+      "total_crosses": 7,
       "layers": {
         "TOP": {
           "net_count": 7,
@@ -14,20 +14,20 @@
           "crossings": []
         },
         "ART02": {
-          "net_count": 7,
+          "net_count": 8,
           "cross_count": 2,
           "crossings": [
             {
-              "x": 83.6112,
-              "y": 96.0204,
-              "netA": "CAM1_I2C_SEL_AR1",
-              "netB": "SSC_SPI_MOSI"
+              "x": 226.4271,
+              "y": 104.2941,
+              "netA": "SSC_SPI_MOSI",
+              "netB": "CAM1_EXT_PWR_EN"
             },
             {
-              "x": 83.5927,
-              "y": 95.8447,
-              "netA": "CAM1_EXT_PWR_EN",
-              "netB": "SSC_SPI_MOSI"
+              "x": 226.4364,
+              "y": 104.0963,
+              "netA": "SSC_SPI_MOSI",
+              "netB": "CAM1_I2C_SEL_AR1"
             }
           ]
         },
@@ -50,8 +50,8 @@
           ]
         },
         "BOTTOM": {
-          "net_count": 6,
-          "cross_count": 5,
+          "net_count": 5,
+          "cross_count": 3,
           "crossings": [
             {
               "x": 225.7167,
@@ -70,18 +70,6 @@
               "y": 95.7058,
               "netA": "CAM1_I2C_SDA_AR1",
               "netB": "SSC_SPI_MISO"
-            },
-            {
-              "x": 92.5136,
-              "y": 98.4251,
-              "netA": "CAM1_CSI1_B0_LN0_P",
-              "netB": "CAM1_IOVDD_1P8V"
-            },
-            {
-              "x": 91.7706,
-              "y": 98.5033,
-              "netA": "CAM1_CSI1_A1_CLK_M",
-              "netB": "CAM1_IOVDD_1P8V"
             }
           ]
         }
