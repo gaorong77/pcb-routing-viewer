@@ -1,6 +1,32 @@
 {
   "history": [
     {
+      "hash": "0a4ace9",
+      "date": "2026-06-04",
+      "message": "feat: (t,n) boundary-relative frame — correct fan-out ordering",
+      "nets": 27,
+      "crossings_total": 0,
+      "note": "旧版crossing检测有bug(漏检X型交叉)，实际有交叉；此版本用于效果对比",
+      "layers": {
+        "TOP": {
+          "nets": 8,
+          "crossings": []
+        },
+        "ART02": {
+          "nets": 7,
+          "crossings": []
+        },
+        "ART03": {
+          "nets": 6,
+          "crossings": []
+        },
+        "BOTTOM": {
+          "nets": 6,
+          "crossings": []
+        }
+      }
+    },
+    {
       "hash": "d027603",
       "message": "chore: progress log — 8 crossings at algorithmic limit, root cause analy",
       "commit_date": "2026-06-07 09:16",
