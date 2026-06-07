@@ -1,32 +1,6 @@
 {
   "history": [
     {
-      "hash": "0a4ace9",
-      "date": "2026-06-04",
-      "message": "feat: (t,n) boundary-relative frame — correct fan-out ordering",
-      "nets": 27,
-      "crossings_total": 0,
-      "note": "旧版crossing检测有bug(漏检X型交叉)，实际有交叉；此版本用于效果对比",
-      "layers": {
-        "TOP": {
-          "nets": 8,
-          "crossings": []
-        },
-        "ART02": {
-          "nets": 7,
-          "crossings": []
-        },
-        "ART03": {
-          "nets": 6,
-          "crossings": []
-        },
-        "BOTTOM": {
-          "nets": 6,
-          "crossings": []
-        }
-      }
-    },
-    {
       "hash": "d027603",
       "message": "chore: progress log — 8 crossings at algorithmic limit, root cause analy",
       "commit_date": "2026-06-07 09:16",
@@ -1880,6 +1854,107 @@
               "y": 107.5285,
               "netA": "PDM1_DATA",
               "netB": "PDM0_CLK"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "hash": "0a4ace9",
+      "date": "2026-06-04",
+      "message": "feat: (t,n) boundary-relative frame — correct fan-out ordering",
+      "nets": 27,
+      "crossings_total": 18,
+      "layers": {
+        "TOP": {
+          "nets": 8,
+          "crossings": [
+            {
+              "a": "VMIC2",
+              "b": "PDM1_CLK"
+            }
+          ]
+        },
+        "ART02": {
+          "nets": 8,
+          "crossings": [
+            {
+              "a": "I2S1_CLK_SYS_AR1",
+              "b": "SSC_SPI_MOSI"
+            },
+            {
+              "a": "I2S1_CLK_SYS_AR1",
+              "b": "CAM1_EXT_PWR_EN"
+            },
+            {
+              "a": "I2S1_CLK_SYS_AR1",
+              "b": "CAM1_I2C_SEL_AR1"
+            },
+            {
+              "a": "I2S1_CLK_SYS_AR1",
+              "b": "SSC_SPI_CS"
+            },
+            {
+              "a": "I2S1_CLK_SYS_AR1",
+              "b": "I2S1_MISO_SYS_AR1"
+            },
+            {
+              "a": "I2S1_CLK_SYS_AR1",
+              "b": "I2S1_WS_SYS_AR1"
+            },
+            {
+              "a": "SSC_SPI_MOSI",
+              "b": "CAM1_EXT_PWR_EN"
+            },
+            {
+              "a": "SSC_SPI_MOSI",
+              "b": "CAM1_I2C_SEL_AR1"
+            }
+          ]
+        },
+        "ART03": {
+          "nets": 7,
+          "crossings": [
+            {
+              "a": "CAM1_CSI1_C1_LN0_M",
+              "b": "CAM1_RESET_N_AR1"
+            },
+            {
+              "a": "CAM1_CSI1_C0_LN0_M",
+              "b": "CAM1_RESET_N_AR1"
+            },
+            {
+              "a": "CAM1_MCLK_AR1",
+              "b": "CAM1_RESET_N_AR1"
+            },
+            {
+              "a": "CAM1_AVDD_2P8V",
+              "b": "SSC_SPI_CLK"
+            }
+          ]
+        },
+        "BOTTOM": {
+          "nets": 7,
+          "crossings": [
+            {
+              "a": "CAM1_CSI1_A1_CLK_M",
+              "b": "CAM1_IOVDD_1P8V"
+            },
+            {
+              "a": "CAM1_CSI1_B0_LN0_P",
+              "b": "CAM1_IOVDD_1P8V"
+            },
+            {
+              "a": "I2S1_MOSI_SYS_AR1",
+              "b": "SSC_SPI_MISO"
+            },
+            {
+              "a": "I2S1_MOSI_SYS_AR1",
+              "b": "CAM1_I2C_SDA_AR1"
+            },
+            {
+              "a": "SSC_SPI_MISO",
+              "b": "CAM1_I2C_SDA_AR1"
             }
           ]
         }
