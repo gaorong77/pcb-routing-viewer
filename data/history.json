@@ -1,6 +1,87 @@
 {
   "history": [
     {
+      "hash": "192007d",
+      "message": "chore: progress log — strategies F-J exhausted, 8 crossings best",
+      "commit_date": "2026-06-07 08:00",
+      "generated_at": "2026-06-07 08:32 UTC",
+      "total_nets": 27,
+      "total_crosses": 8,
+      "layers": {
+        "TOP": {
+          "net_count": 8,
+          "cross_count": 0,
+          "crossings": []
+        },
+        "ART02": {
+          "net_count": 7,
+          "cross_count": 2,
+          "crossings": [
+            {
+              "x": 226.4271,
+              "y": 104.2941,
+              "netA": "SSC_SPI_MOSI",
+              "netB": "CAM1_EXT_PWR_EN"
+            },
+            {
+              "x": 226.4364,
+              "y": 104.0963,
+              "netA": "SSC_SPI_MOSI",
+              "netB": "CAM1_I2C_SEL_AR1"
+            }
+          ]
+        },
+        "ART03": {
+          "net_count": 7,
+          "cross_count": 2,
+          "crossings": [
+            {
+              "x": 147.8904,
+              "y": 110.1756,
+              "netA": "SSC_SPI_CLK",
+              "netB": "CAM1_RESET_N_AR1"
+            },
+            {
+              "x": 149.8941,
+              "y": 109.9271,
+              "netA": "SSC_SPI_CLK",
+              "netB": "CAM1_DVDD_0P9V"
+            }
+          ]
+        },
+        "BOTTOM": {
+          "net_count": 5,
+          "cross_count": 4,
+          "crossings": [
+            {
+              "x": 225.7167,
+              "y": 105.0405,
+              "netA": "I2S1_MOSI_SYS_AR1",
+              "netB": "SSC_SPI_MISO"
+            },
+            {
+              "x": 225.7258,
+              "y": 104.843,
+              "netA": "I2S1_MOSI_SYS_AR1",
+              "netB": "CAM1_I2C_SDA_AR1"
+            },
+            {
+              "x": 226.077,
+              "y": 104.5681,
+              "netA": "SSC_SPI_MISO",
+              "netB": "CAM1_I2C_SDA_AR1"
+            },
+            {
+              "x": 91.7706,
+              "y": 98.5033,
+              "netA": "CAM1_CSI1_A1_CLK_M",
+              "netB": "CAM1_IOVDD_1P8V"
+            }
+          ]
+        }
+      }
+    },
+    {
       "hash": "adc17cd",
       "message": "fix: 8 crossings — BOTTOM MISO换层+专项换层块 (↓20%)",
       "commit_date": "2026-06-07 07:48",
@@ -1617,5 +1698,5 @@
       }
     }
   ],
-  "latest": "adc17cd"
+  "latest": "192007d"
 }
