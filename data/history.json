@@ -4,12 +4,12 @@
       "hash": "c1065e7",
       "message": "fix: post-pass results_draw + all_cross_pts — viewer now shows correct 1",
       "commit_date": "2026-06-07 07:33",
-      "generated_at": "2026-06-07 07:43 UTC",
-      "total_nets": 22,
-      "total_crosses": 7,
+      "generated_at": "2026-06-07 07:46 UTC",
+      "total_nets": 27,
+      "total_crosses": 8,
       "layers": {
         "TOP": {
-          "net_count": 7,
+          "net_count": 8,
           "cross_count": 0,
           "crossings": []
         },
@@ -32,7 +32,25 @@
           ]
         },
         "ART03": {
-          "net_count": 4,
+          "net_count": 7,
+          "cross_count": 2,
+          "crossings": [
+            {
+              "x": 147.8904,
+              "y": 110.1756,
+              "netA": "SSC_SPI_CLK",
+              "netB": "CAM1_RESET_N_AR1"
+            },
+            {
+              "x": 149.8941,
+              "y": 109.9271,
+              "netA": "SSC_SPI_CLK",
+              "netB": "CAM1_DVDD_0P9V"
+            }
+          ]
+        },
+        "BOTTOM": {
+          "net_count": 5,
           "cross_count": 4,
           "crossings": [
             {
@@ -58,18 +76,6 @@
               "y": 109.3531,
               "netA": "PDM1_DATA",
               "netB": "PDM0_CLK"
-            }
-          ]
-        },
-        "BOTTOM": {
-          "net_count": 4,
-          "cross_count": 1,
-          "crossings": [
-            {
-              "x": 92.4276,
-              "y": 98.8867,
-              "netA": "CAM1_I2C_SCL",
-              "netB": "CAM1_RESET_N_AR1"
             }
           ]
         }
