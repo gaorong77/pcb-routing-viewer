@@ -4,9 +4,9 @@
       "hash": "d027603",
       "message": "chore: progress log — 8 crossings at algorithmic limit, root cause analy",
       "commit_date": "2026-06-07 09:16",
-      "generated_at": "2026-06-07 10:22 UTC",
+      "generated_at": "2026-06-07 10:32 UTC",
       "total_nets": 27,
-      "total_crosses": 9,
+      "total_crosses": 8,
       "layers": {
         "TOP": {
           "net_count": 8,
@@ -14,7 +14,7 @@
           "crossings": []
         },
         "ART02": {
-          "net_count": 6,
+          "net_count": 7,
           "cross_count": 2,
           "crossings": [
             {
@@ -50,8 +50,8 @@
           ]
         },
         "BOTTOM": {
-          "net_count": 6,
-          "cross_count": 5,
+          "net_count": 5,
+          "cross_count": 4,
           "crossings": [
             {
               "x": 225.7167,
@@ -70,12 +70,6 @@
               "y": 104.5681,
               "netA": "SSC_SPI_MISO",
               "netB": "CAM1_I2C_SDA_AR1"
-            },
-            {
-              "x": 92.5136,
-              "y": 98.4251,
-              "netA": "CAM1_CSI1_B0_LN0_P",
-              "netB": "CAM1_IOVDD_1P8V"
             },
             {
               "x": 91.7706,
