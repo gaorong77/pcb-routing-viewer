@@ -4,9 +4,9 @@
       "hash": "792a0fd",
       "message": "progress: record A* stub experiment findings",
       "commit_date": "2026-06-08 09:14",
-      "generated_at": "2026-06-08 09:51 UTC",
+      "generated_at": "2026-06-08 10:21 UTC",
       "total_nets": 27,
-      "total_crosses": 5,
+      "total_crosses": 3,
       "layers": {
         "TOP": {
           "net_count": 7,
@@ -18,10 +18,10 @@
           "cross_count": 1,
           "crossings": [
             {
-              "x": 226.4364,
-              "y": 104.0963,
+              "x": 226.4271,
+              "y": 104.2941,
               "netA": "SSC_SPI_MOSI",
-              "netB": "CAM1_I2C_SEL_AR1"
+              "netB": "CAM1_EXT_PWR_EN"
             }
           ]
         },
@@ -45,21 +45,8 @@
         },
         "BOTTOM": {
           "net_count": 5,
-          "cross_count": 2,
-          "crossings": [
-            {
-              "x": 226.9972,
-              "y": 103.9043,
-              "netA": "I2S1_MOSI_SYS_AR1",
-              "netB": "SSC_SPI_MISO"
-            },
-            {
-              "x": 226.4333,
-              "y": 103.3643,
-              "netA": "I2S1_MOSI_SYS_AR1",
-              "netB": "CAM1_I2C_SDA_AR1"
-            }
-          ]
+          "cross_count": 0,
+          "crossings": []
         }
       }
     },
