@@ -4,9 +4,9 @@
       "hash": "b67ce35",
       "message": "wip: revert _t() to original left-pin tau — next step: force BOTTOM righ",
       "commit_date": "2026-06-08 05:36",
-      "generated_at": "2026-06-08 06:11 UTC",
+      "generated_at": "2026-06-08 07:04 UTC",
       "total_nets": 27,
-      "total_crosses": 7,
+      "total_crosses": 5,
       "layers": {
         "TOP": {
           "net_count": 7,
@@ -15,19 +15,13 @@
         },
         "ART02": {
           "net_count": 8,
-          "cross_count": 2,
+          "cross_count": 1,
           "crossings": [
             {
               "x": 226.4271,
               "y": 104.2941,
               "netA": "SSC_SPI_MOSI",
               "netB": "CAM1_EXT_PWR_EN"
-            },
-            {
-              "x": 226.4364,
-              "y": 104.0963,
-              "netA": "SSC_SPI_MOSI",
-              "netB": "CAM1_I2C_SEL_AR1"
             }
           ]
         },
@@ -51,25 +45,19 @@
         },
         "BOTTOM": {
           "net_count": 5,
-          "cross_count": 3,
+          "cross_count": 2,
           "crossings": [
             {
-              "x": 225.7167,
-              "y": 105.0405,
+              "x": 223.6492,
+              "y": 103.4532,
               "netA": "I2S1_MOSI_SYS_AR1",
-              "netB": "SSC_SPI_MISO"
+              "netB": "CAM1_CSI1_B0_LN0_P"
             },
             {
-              "x": 225.7258,
-              "y": 104.843,
+              "x": 223.795,
+              "y": 103.411,
               "netA": "I2S1_MOSI_SYS_AR1",
-              "netB": "CAM1_I2C_SDA_AR1"
-            },
-            {
-              "x": 226.077,
-              "y": 104.5681,
-              "netA": "SSC_SPI_MISO",
-              "netB": "CAM1_I2C_SDA_AR1"
+              "netB": "CAM1_CSI1_A1_CLK_M"
             }
           ]
         }
