@@ -1,6 +1,69 @@
 {
   "history": [
     {
+      "hash": "2f47b49",
+      "message": "feat: MOSI reverse-arc via TOP + A* stub reroute → 5→3 crossings",
+      "commit_date": "2026-06-08 10:22",
+      "generated_at": "2026-06-08 11:24 UTC",
+      "total_nets": 27,
+      "total_crosses": 5,
+      "layers": {
+        "TOP": {
+          "net_count": 7,
+          "cross_count": 0,
+          "crossings": []
+        },
+        "ART02": {
+          "net_count": 7,
+          "cross_count": 1,
+          "crossings": [
+            {
+              "x": 226.4271,
+              "y": 104.2941,
+              "netA": "SSC_SPI_MOSI",
+              "netB": "CAM1_EXT_PWR_EN"
+            }
+          ]
+        },
+        "ART03": {
+          "net_count": 7,
+          "cross_count": 2,
+          "crossings": [
+            {
+              "x": 147.8904,
+              "y": 110.1756,
+              "netA": "SSC_SPI_CLK",
+              "netB": "CAM1_RESET_N_AR1"
+            },
+            {
+              "x": 149.8941,
+              "y": 109.9271,
+              "netA": "SSC_SPI_CLK",
+              "netB": "CAM1_DVDD_0P9V"
+            }
+          ]
+        },
+        "BOTTOM": {
+          "net_count": 6,
+          "cross_count": 2,
+          "crossings": [
+            {
+              "x": 92.5136,
+              "y": 98.4251,
+              "netA": "CAM1_CSI1_B0_LN0_P",
+              "netB": "CAM1_IOVDD_1P8V"
+            },
+            {
+              "x": 91.7706,
+              "y": 98.5033,
+              "netA": "CAM1_CSI1_A1_CLK_M",
+              "netB": "CAM1_IOVDD_1P8V"
+            }
+          ]
+        }
+      }
+    },
+    {
       "hash": "792a0fd",
       "message": "progress: record A* stub experiment findings",
       "commit_date": "2026-06-08 09:14",
@@ -2273,5 +2336,5 @@
       }
     }
   ],
-  "latest": "792a0fd"
+  "latest": "2f47b49"
 }
