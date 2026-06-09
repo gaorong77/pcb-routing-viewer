@@ -1,6 +1,49 @@
 {
   "history": [
     {
+      "hash": "514bed2",
+      "message": "fix: IndentationError in net_path def after _astar_bypass_crossing",
+      "commit_date": "2026-06-09 16:32",
+      "generated_at": "2026-06-09 16:40 UTC",
+      "total_nets": 27,
+      "total_crosses": 2,
+      "layers": {
+        "TOP": {
+          "net_count": 7,
+          "cross_count": 0,
+          "crossings": []
+        },
+        "ART02": {
+          "net_count": 7,
+          "cross_count": 0,
+          "crossings": []
+        },
+        "ART03": {
+          "net_count": 7,
+          "cross_count": 2,
+          "crossings": [
+            {
+              "x": 148.4534,
+              "y": 110.3228,
+              "netA": "SSC_SPI_CLK",
+              "netB": "CAM1_RESET_N_AR1"
+            },
+            {
+              "x": 149.8941,
+              "y": 109.9271,
+              "netA": "SSC_SPI_CLK",
+              "netB": "CAM1_DVDD_0P9V"
+            }
+          ]
+        },
+        "BOTTOM": {
+          "net_count": 6,
+          "cross_count": 0,
+          "crossings": []
+        }
+      }
+    },
+    {
       "hash": "955e968",
       "message": "feat: C2 ART03 A* pass (RESET_N+CLK dynamic split)",
       "commit_date": "2026-06-09 16:12",
@@ -3020,5 +3063,5 @@
       }
     }
   ],
-  "latest": "955e968"
+  "latest": "514bed2"
 }
