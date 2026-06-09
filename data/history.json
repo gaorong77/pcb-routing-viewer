@@ -1,6 +1,99 @@
 {
   "history": [
     {
+      "hash": "627760d",
+      "message": "add slot_compress_pass: same-slot opposite-arc reuse (5 crossings remain",
+      "commit_date": "2026-06-09 02:02",
+      "generated_at": "2026-06-09 02:27 UTC",
+      "total_nets": 27,
+      "total_crosses": 10,
+      "layers": {
+        "TOP": {
+          "net_count": 7,
+          "cross_count": 0,
+          "crossings": []
+        },
+        "ART02": {
+          "net_count": 7,
+          "cross_count": 1,
+          "crossings": [
+            {
+              "x": 226.4271,
+              "y": 104.2941,
+              "netA": "SSC_SPI_MOSI",
+              "netB": "CAM1_EXT_PWR_EN"
+            }
+          ]
+        },
+        "ART03": {
+          "net_count": 7,
+          "cross_count": 2,
+          "crossings": [
+            {
+              "x": 147.8904,
+              "y": 110.1756,
+              "netA": "SSC_SPI_CLK",
+              "netB": "CAM1_RESET_N_AR1"
+            },
+            {
+              "x": 149.8941,
+              "y": 109.9271,
+              "netA": "SSC_SPI_CLK",
+              "netB": "CAM1_DVDD_0P9V"
+            }
+          ]
+        },
+        "BOTTOM": {
+          "net_count": 6,
+          "cross_count": 7,
+          "crossings": [
+            {
+              "x": 223.5737,
+              "y": 104.094,
+              "netA": "I2S1_MOSI_SYS_AR1",
+              "netB": "CAM1_CSI1_B0_LN0_P"
+            },
+            {
+              "x": 223.672,
+              "y": 104.2173,
+              "netA": "I2S1_MOSI_SYS_AR1",
+              "netB": "CAM1_CSI1_A1_CLK_M"
+            },
+            {
+              "x": 223.7691,
+              "y": 104.339,
+              "netA": "I2S1_MOSI_SYS_AR1",
+              "netB": "CAM1_IOVDD_1P8V"
+            },
+            {
+              "x": 85.7378,
+              "y": 104.744,
+              "netA": "I2S1_MOSI_SYS_AR1",
+              "netB": "PDM0_CLK"
+            },
+            {
+              "x": 224.0211,
+              "y": 104.655,
+              "netA": "I2S1_MOSI_SYS_AR1",
+              "netB": "CAM1_I2C_SEL_AR1__via_r"
+            },
+            {
+              "x": 92.5136,
+              "y": 98.4251,
+              "netA": "CAM1_CSI1_B0_LN0_P",
+              "netB": "CAM1_IOVDD_1P8V"
+            },
+            {
+              "x": 91.7706,
+              "y": 98.5033,
+              "netA": "CAM1_CSI1_A1_CLK_M",
+              "netB": "CAM1_IOVDD_1P8V"
+            }
+          ]
+        }
+      }
+    },
+    {
       "hash": "9747532",
       "message": "fix: add board-boundary check to strategy-B IOVDD re-layer pass",
       "commit_date": "2026-06-08 11:27",
@@ -2399,5 +2492,5 @@
       }
     }
   ],
-  "latest": "9747532"
+  "latest": "627760d"
 }
