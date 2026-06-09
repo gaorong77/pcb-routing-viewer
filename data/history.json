@@ -1,6 +1,56 @@
 {
   "history": [
     {
+      "hash": "aaf3486",
+      "message": "fix: DRC cx_f count bug; B0/A1 step=0.10 (0.15 too coarse for cam area)",
+      "commit_date": "2026-06-09 15:53",
+      "generated_at": "2026-06-09 16:00 UTC",
+      "total_nets": 27,
+      "total_crosses": 3,
+      "layers": {
+        "TOP": {
+          "net_count": 7,
+          "cross_count": 0,
+          "crossings": []
+        },
+        "ART02": {
+          "net_count": 7,
+          "cross_count": 1,
+          "crossings": [
+            {
+              "x": 226.4271,
+              "y": 104.2941,
+              "netA": "SSC_SPI_MOSI",
+              "netB": "CAM1_EXT_PWR_EN"
+            }
+          ]
+        },
+        "ART03": {
+          "net_count": 7,
+          "cross_count": 2,
+          "crossings": [
+            {
+              "x": 147.8904,
+              "y": 110.1756,
+              "netA": "SSC_SPI_CLK",
+              "netB": "CAM1_RESET_N_AR1"
+            },
+            {
+              "x": 149.8941,
+              "y": 109.9271,
+              "netA": "SSC_SPI_CLK",
+              "netB": "CAM1_DVDD_0P9V"
+            }
+          ]
+        },
+        "BOTTOM": {
+          "net_count": 6,
+          "cross_count": 0,
+          "crossings": []
+        }
+      }
+    },
+    {
       "hash": "fd9a556",
       "message": "feat: B2 B0/A1 step=0.15+Chaikin smooth, C1 crossing xy diagnostics",
       "commit_date": "2026-06-09 15:44",
@@ -2884,5 +2934,5 @@
       }
     }
   ],
-  "latest": "fd9a556"
+  "latest": "aaf3486"
 }
