@@ -1,6 +1,49 @@
 {
   "history": [
     {
+      "hash": "1d9acab",
+      "message": "fix: A1 scan_obs only IOVDD (not B0_updated), avoid ZIF-area over-long b",
+      "commit_date": "2026-06-09 17:24",
+      "generated_at": "2026-06-09 17:35 UTC",
+      "total_nets": 27,
+      "total_crosses": 2,
+      "layers": {
+        "TOP": {
+          "net_count": 7,
+          "cross_count": 0,
+          "crossings": []
+        },
+        "ART02": {
+          "net_count": 7,
+          "cross_count": 0,
+          "crossings": []
+        },
+        "ART03": {
+          "net_count": 7,
+          "cross_count": 2,
+          "crossings": [
+            {
+              "x": 148.4534,
+              "y": 110.3228,
+              "netA": "SSC_SPI_CLK",
+              "netB": "CAM1_RESET_N_AR1"
+            },
+            {
+              "x": 149.8941,
+              "y": 109.9271,
+              "netA": "SSC_SPI_CLK",
+              "netB": "CAM1_DVDD_0P9V"
+            }
+          ]
+        },
+        "BOTTOM": {
+          "net_count": 6,
+          "cross_count": 0,
+          "crossings": []
+        }
+      }
+    },
+    {
       "hash": "571927a",
       "message": "refactor: BOTTOM B0/A1 + ART02 → bypass+rejoin (最小A*原则)",
       "commit_date": "2026-06-09 17:14",
@@ -3106,5 +3149,5 @@
       }
     }
   ],
-  "latest": "571927a"
+  "latest": "1d9acab"
 }
