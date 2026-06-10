@@ -1,6 +1,43 @@
 {
   "history": [
     {
+      "hash": "cff5ee0",
+      "message": "feat: _arc_restore_min_bypass — Dijkstra槽道恢复原则；BOTTOM bypass改用arc-restor",
+      "commit_date": "2026-06-10 01:09",
+      "generated_at": "2026-06-10 01:18 UTC",
+      "total_nets": 27,
+      "total_crosses": 1,
+      "layers": {
+        "TOP": {
+          "net_count": 7,
+          "cross_count": 0,
+          "crossings": []
+        },
+        "ART02": {
+          "net_count": 7,
+          "cross_count": 0,
+          "crossings": []
+        },
+        "ART03": {
+          "net_count": 7,
+          "cross_count": 1,
+          "crossings": [
+            {
+              "x": 150.1421,
+              "y": 109.8615,
+              "netA": "SSC_SPI_CLK",
+              "netB": "CAM1_DVDD_0P9V"
+            }
+          ]
+        },
+        "BOTTOM": {
+          "net_count": 6,
+          "cross_count": 0,
+          "crossings": []
+        }
+      }
+    },
+    {
       "hash": "4c0ec6c",
       "message": "fix: CLK slot override 改到正确位置 assign_slots_t DP 路径 all_viable 构建处（之前错放在贪",
       "commit_date": "2026-06-09 17:58",
@@ -3272,5 +3309,5 @@
       }
     }
   ],
-  "latest": "4c0ec6c"
+  "latest": "cff5ee0"
 }
